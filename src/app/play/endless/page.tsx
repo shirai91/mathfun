@@ -8,6 +8,7 @@ import Question from '@/components/game/Question';
 import AnswerGrid from '@/components/game/AnswerGrid';
 import StreakDisplay from '@/components/game/StreakDisplay';
 import HintButton from '@/components/ui/HintButton';
+import VisualHint from '@/components/game/VisualHint';
 import EndlessStats from '@/components/game/EndlessStats';
 import Confetti from '@/components/game/Confetti';
 import Button from '@/components/ui/Button';
@@ -26,7 +27,7 @@ function EndlessContent() {
 
   const [gameState, setGameState] = useState<EndlessState | null>(null);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [hintedAnswer, setHintedAnswer] = useState<number | null>(null);
+  const [showHint, setShowHint] = useState(false);
   const [isAnswering, setIsAnswering] = useState(false);
   const [showCorrectAnimation, setShowCorrectAnimation] = useState(false);
   const [showExitDialog, setShowExitDialog] = useState(false);
@@ -42,7 +43,7 @@ function EndlessContent() {
       hintsUsed: 0,
     });
     setSelectedAnswer(null);
-    setHintedAnswer(null);
+    setShowHint(false);
     setIsAnswering(false);
     setShowCorrectAnimation(false);
     setShowStats(false);
@@ -57,6 +58,7 @@ function EndlessContent() {
 
     setSelectedAnswer(answer);
     setIsAnswering(true);
+    setShowHint(false);
 
     const isCorrect = answer === gameState.currentQuestion.answer;
     const newStreak = isCorrect ? gameState.currentStreak + 1 : 0;
@@ -89,22 +91,18 @@ function EndlessContent() {
       });
 
       setSelectedAnswer(null);
-      setHintedAnswer(null);
+      setShowHint(false);
       setIsAnswering(false);
       setShowCorrectAnimation(false);
     }, isCorrect ? 1200 : 800);
   };
 
   const handleHint = () => {
-    if (!gameState || hintedAnswer !== null) return;
+    if (!gameState || showHint) return;
 
     playHint();
-    setHintedAnswer(gameState.currentQuestion.answer);
+    setShowHint(true);
     setGameState((prev) => prev ? { ...prev, hintsUsed: prev.hintsUsed + 1 } : null);
-
-    setTimeout(() => {
-      setHintedAnswer(null);
-    }, 2000);
   };
 
   const handleExit = () => {
@@ -198,16 +196,17 @@ function EndlessContent() {
         <div className="w-14" />
       </header>
 
-      <main className="flex-1 flex flex-col items-center justify-center gap-8 p-4">
-        <div className="mb-4">
+      <main className="flex-1 flex flex-col items-center justify-center gap-6 p-4">
+        <div className="mb-2">
           <Question question={gameState.currentQuestion} />
         </div>
+
+        <VisualHint question={gameState.currentQuestion} show={showHint} />
 
         <AnswerGrid
           options={gameState.currentQuestion.options}
           correctAnswer={gameState.currentQuestion.answer}
           selectedAnswer={selectedAnswer}
-          hintedAnswer={hintedAnswer}
           onSelect={handleAnswer}
           disabled={isAnswering}
         />
@@ -216,7 +215,7 @@ function EndlessContent() {
       <div className="fixed bottom-6 left-6">
         <HintButton
           onClick={handleHint}
-          disabled={isAnswering || hintedAnswer !== null}
+          disabled={isAnswering || showHint}
         />
       </div>
 

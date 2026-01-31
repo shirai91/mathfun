@@ -6,7 +6,6 @@ interface AnswerGridProps {
   options: number[];
   correctAnswer: number;
   selectedAnswer: number | null;
-  hintedAnswer: number | null;
   onSelect: (answer: number) => void;
   disabled?: boolean;
 }
@@ -15,16 +14,12 @@ export default function AnswerGrid({
   options,
   correctAnswer,
   selectedAnswer,
-  hintedAnswer,
   onSelect,
   disabled = false,
 }: AnswerGridProps) {
   const getAnswerState = (option: number) => {
     if (selectedAnswer === option) {
       return option === correctAnswer ? 'correct' : 'wrong';
-    }
-    if (hintedAnswer === option) {
-      return 'hint';
     }
     return 'default';
   };

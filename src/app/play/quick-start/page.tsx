@@ -9,6 +9,7 @@ import Question from '@/components/game/Question';
 import AnswerGrid from '@/components/game/AnswerGrid';
 import ScoreBoard from '@/components/game/ScoreBoard';
 import HintButton from '@/components/ui/HintButton';
+import VisualHint from '@/components/game/VisualHint';
 import ResultsScreen from '@/components/game/ResultsScreen';
 import Confetti from '@/components/game/Confetti';
 import { useSoundContext } from '@/contexts/SoundContext';
@@ -25,7 +26,7 @@ function QuickStartContent() {
 
   const [gameState, setGameState] = useState<QuickStartState | null>(null);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [hintedAnswer, setHintedAnswer] = useState<number | null>(null);
+  const [showHint, setShowHint] = useState(false);
   const [isAnswering, setIsAnswering] = useState(false);
   const [showCorrectAnimation, setShowCorrectAnimation] = useState(false);
 
@@ -40,7 +41,7 @@ function QuickStartContent() {
       hintsUsed: 0,
     });
     setSelectedAnswer(null);
-    setHintedAnswer(null);
+    setShowHint(false);
     setIsAnswering(false);
     setShowCorrectAnimation(false);
   }, [range]);
@@ -56,6 +57,7 @@ function QuickStartContent() {
 
     setSelectedAnswer(answer);
     setIsAnswering(true);
+    setShowHint(false);
 
     const isCorrect = answer === currentQuestion.answer;
 
@@ -89,22 +91,18 @@ function QuickStartContent() {
       }
 
       setSelectedAnswer(null);
-      setHintedAnswer(null);
+      setShowHint(false);
       setIsAnswering(false);
       setShowCorrectAnimation(false);
     }, isCorrect ? 1500 : 1000);
   };
 
   const handleHint = () => {
-    if (!currentQuestion || hintedAnswer !== null) return;
+    if (!currentQuestion || showHint) return;
 
     playHint();
-    setHintedAnswer(currentQuestion.answer);
+    setShowHint(true);
     setGameState((prev) => prev ? { ...prev, hintsUsed: prev.hintsUsed + 1 } : null);
-
-    setTimeout(() => {
-      setHintedAnswer(null);
-    }, 2000);
   };
 
   const handlePlayAgain = () => {
@@ -150,16 +148,17 @@ function QuickStartContent() {
         />
       </GameHeader>
 
-      <main className="flex-1 flex flex-col items-center justify-center gap-8 p-4">
-        <div className="mb-4">
+      <main className="flex-1 flex flex-col items-center justify-center gap-6 p-4">
+        <div className="mb-2">
           <Question question={currentQuestion} />
         </div>
+
+        <VisualHint question={currentQuestion} show={showHint} />
 
         <AnswerGrid
           options={currentQuestion.options}
           correctAnswer={currentQuestion.answer}
           selectedAnswer={selectedAnswer}
-          hintedAnswer={hintedAnswer}
           onSelect={handleAnswer}
           disabled={isAnswering}
         />
@@ -168,7 +167,7 @@ function QuickStartContent() {
       <div className="fixed bottom-6 left-6">
         <HintButton
           onClick={handleHint}
-          disabled={isAnswering || hintedAnswer !== null}
+          disabled={isAnswering || showHint}
         />
       </div>
     </PaperBackground>

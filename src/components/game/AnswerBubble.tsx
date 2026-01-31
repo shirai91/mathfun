@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-type AnswerState = 'default' | 'correct' | 'wrong' | 'hint';
+type AnswerState = 'default' | 'correct' | 'wrong';
 
 interface AnswerBubbleProps {
   value: number;
@@ -44,8 +44,6 @@ export default function AnswerBubble({
         return 'bg-[#7CB342] scale-110 ring-4 ring-[#7CB342]/50';
       case 'wrong':
         return 'bg-[#FF6B6B]';
-      case 'hint':
-        return `${color.bg} animate-pulse-glow`;
       default:
         return `${color.bg} ${color.hover}`;
     }
