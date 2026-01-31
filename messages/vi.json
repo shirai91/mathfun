@@ -1,0 +1,80 @@
+{
+  "app": {
+    "title": "MathFun",
+    "tagline": "Học toán vui vẻ!"
+  },
+  "menu": {
+    "quickStart": "Chơi Nhanh",
+    "endless": "Chế độ Vô tận",
+    "selectRange": "Chọn phạm vi số",
+    "back": "Quay lại"
+  },
+  "range": {
+    "upTo": "Đến",
+    "title": "Chọn phạm vi số!",
+    "10": "Số đến 10",
+    "20": "Số đến 20",
+    "50": "Số đến 50",
+    "100": "Số đến 100"
+  },
+  "game": {
+    "question": "Câu hỏi",
+    "score": "Điểm",
+    "hint": "Gợi ý",
+    "streak": "Chuỗi",
+    "bestStreak": "Tốt nhất",
+    "correct": "Đúng rồi!",
+    "wrong": "Sai rồi!",
+    "hintsUsed": "Gợi ý đã dùng",
+    "loading": "Đang tải...",
+    "questionOf": "Câu {current} / {total}"
+  },
+  "results": {
+    "complete": "Hoàn thành!",
+    "yourScore": "Điểm của bạn",
+    "outOf": "trên",
+    "perfect": "Xuất sắc! 🌟",
+    "great": "Tuyệt vời! 🎉",
+    "good": "Tốt lắm! 👍",
+    "keepPracticing": "Cố gắng thêm nhé! 💪",
+    "playAgain": "Chơi lại",
+    "mainMenu": "Menu chính"
+  },
+  "endless": {
+    "exit": "Thoát",
+    "continue": "Tiếp tục",
+    "confirmExit": "Bạn có chắc muốn thoát?",
+    "yes": "Có",
+    "no": "Không",
+    "questionsAnswered": "Câu đã trả lời",
+    "correctAnswers": "Câu đúng",
+    "accuracy": "Độ chính xác",
+    "greatSession": "Tuyệt vời!"
+  },
+  "backButton": {
+    "title": "Rời trò chơi?",
+    "message": "Bạn có chắc muốn quay lại? Tiến trình của bạn sẽ bị mất!",
+    "confirm": "Có, rời đi",
+    "cancel": "Ở lại",
+    "ariaLabel": "Quay lại"
+  },
+  "starRating": {
+    "perfect": "Hoàn hảo! Tuyệt vời!",
+    "great": "Giỏi lắm! Cố gắng tiếp!",
+    "good": "Tốt lắm! Thử lại nhé!",
+    "keepPracticing": "Cố gắng thêm! Bạn làm được!"
+  },
+  "sound": {
+    "mute": "Tắt tiếng",
+    "enable": "Bật tiếng",
+    "on": "Đã bật",
+    "off": "Đã tắt",
+    "pauseMusic": "Dừng nhạc",
+    "playMusic": "Phát nhạc",
+    "musicPlaying": "Nhạc đang phát",
+    "musicPaused": "Nhạc đã dừng"
+  },
+  "hint": {
+    "get": "Xem gợi ý"
+  }
+}

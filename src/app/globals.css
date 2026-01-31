@@ -1,26 +1,155 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Paper colors */
+  --color-paper: #FFF8E7;
+  --color-paper-dark: #F5EDD8;
+
+  /* Text colors */
+  --color-text: #4A3728;
+  --color-text-light: #6B5744;
+
+  /* Accent colors */
+  --color-blue: #4ECDC4;
+  --color-blue-hover: #3DBDB4;
+  --color-green: #7CB342;
+  --color-green-hover: #6BA032;
+  --color-orange: #FF9F43;
+  --color-orange-hover: #E88E32;
+  --color-pink: #FF6B9D;
+  --color-pink-hover: #E85A8C;
+  --color-purple: #9B59B6;
+  --color-purple-hover: #8A48A5;
+  --color-yellow: #FFD93D;
+  --color-yellow-hover: #ECC82C;
+
+  /* Feedback colors */
+  --color-correct: #7CB342;
+  --color-wrong: #FF6B6B;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: var(--color-paper);
+  --color-paper-dark: var(--color-paper-dark);
+  --font-sans: var(--font-nunito);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-text);
+  font-family: var(--font-nunito), 'Nunito', sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Paper texture effect */
+.paper-texture {
+  background-color: var(--color-paper);
+  background-image:
+    radial-gradient(ellipse at 50% 50%, transparent 0%, rgba(139, 119, 101, 0.03) 100%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  position: relative;
+}
+
+/* Fun button styles */
+.btn-bounce {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-bounce:hover {
+  transform: scale(1.05);
+}
+
+.btn-bounce:active {
+  transform: scale(0.95);
+}
+
+/* Shake animation for wrong answers */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Bounce animation */
+@keyframes bounce-in {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.4s ease-out forwards;
+}
+
+/* Confetti animation */
+@keyframes confetti-fall {
+  0% { transform: translateY(-100%) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+.animate-confetti {
+  animation: confetti-fall 3s ease-in forwards;
+}
+
+/* Pulse animation for hints */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 217, 61, 0.7); }
+  50% { box-shadow: 0 0 20px 10px rgba(255, 217, 61, 0.4); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 1s ease-in-out 3;
+}
+
+/* Floating animation for decorations */
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Fade in animation */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+/* Star spin animation */
+@keyframes star-spin {
+  from { transform: rotate(0deg) scale(0); }
+  to { transform: rotate(360deg) scale(1); }
+}
+
+.animate-star {
+  animation: star-spin 0.5s ease-out forwards;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  background: rgba(74, 55, 40, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+/* Progress bar */
+.progress-bar {
+  background: linear-gradient(90deg, var(--color-green) 0%, var(--color-blue) 100%);
+  border-radius: 9999px;
+  transition: width 0.3s ease-out;
 }

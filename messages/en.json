@@ -1,0 +1,80 @@
+{
+  "app": {
+    "title": "MathFun",
+    "tagline": "Learn math with fun!"
+  },
+  "menu": {
+    "quickStart": "Quick Start",
+    "endless": "Endless Mode",
+    "selectRange": "Select number range",
+    "back": "Back"
+  },
+  "range": {
+    "upTo": "Up to",
+    "title": "Choose your number range!",
+    "10": "Numbers up to 10",
+    "20": "Numbers up to 20",
+    "50": "Numbers up to 50",
+    "100": "Numbers up to 100"
+  },
+  "game": {
+    "question": "Question",
+    "score": "Score",
+    "hint": "Hint",
+    "streak": "Streak",
+    "bestStreak": "Best",
+    "correct": "Correct!",
+    "wrong": "Wrong!",
+    "hintsUsed": "Hints used",
+    "loading": "Loading...",
+    "questionOf": "Question {current} of {total}"
+  },
+  "results": {
+    "complete": "Complete!",
+    "yourScore": "Your score",
+    "outOf": "out of",
+    "perfect": "Perfect! 🌟",
+    "great": "Great job! 🎉",
+    "good": "Good work! 👍",
+    "keepPracticing": "Keep practicing! 💪",
+    "playAgain": "Play Again",
+    "mainMenu": "Main Menu"
+  },
+  "endless": {
+    "exit": "Exit",
+    "continue": "Continue",
+    "confirmExit": "Are you sure you want to exit?",
+    "yes": "Yes",
+    "no": "No",
+    "questionsAnswered": "Questions",
+    "correctAnswers": "Correct",
+    "accuracy": "Accuracy",
+    "greatSession": "Great Session!"
+  },
+  "backButton": {
+    "title": "Leave Game?",
+    "message": "Are you sure you want to go back? Your progress will be lost!",
+    "confirm": "Yes, leave",
+    "cancel": "Stay",
+    "ariaLabel": "Go back"
+  },
+  "starRating": {
+    "perfect": "Perfect! Amazing job!",
+    "great": "Great work! Keep it up!",
+    "good": "Good effort! Try again!",
+    "keepPracticing": "Keep practicing! You can do it!"
+  },
+  "sound": {
+    "mute": "Mute sound effects",
+    "enable": "Enable sound effects",
+    "on": "Sound effects on",
+    "off": "Sound effects off",
+    "pauseMusic": "Pause music",
+    "playMusic": "Play music",
+    "musicPlaying": "Music playing",
+    "musicPaused": "Music paused"
+  },
+  "hint": {
+    "get": "Get hint"
+  }
+}
