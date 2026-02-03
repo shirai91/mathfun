@@ -17,21 +17,32 @@ function hashString(str: string): number {
 }
 
 function EmojiGroup({ count, emoji }: { count: number; emoji: string }) {
-  // For larger numbers, show in rows of 5
+  // For larger numbers (>10), group into packs of 10 for better visualization
   if (count > 10) {
-    const rows = Math.ceil(count / 5);
+    const packs = Math.floor(count / 10);
+    const remainder = count % 10;
+    
     return (
-      <div className="flex flex-col gap-1">
-        {Array.from({ length: rows }, (_, rowIndex) => {
-          const itemsInRow = Math.min(5, count - rowIndex * 5);
-          return (
-            <div key={rowIndex} className="flex gap-0.5">
-              {Array.from({ length: itemsInRow }, (_, i) => (
-                <span key={i} className="text-2xl md:text-3xl">{emoji}</span>
-              ))}
-            </div>
-          );
-        })}
+      <div className="flex flex-col gap-2 items-center">
+        {/* Packs of 10 - larger icons */}
+        {packs > 0 && (
+          <div className="flex flex-wrap gap-1 justify-center">
+            {Array.from({ length: packs }, (_, i) => (
+              <div key={i} className="flex items-center bg-yellow-100 rounded-lg px-2 py-1 border-2 border-yellow-300">
+                <span className="text-4xl md:text-5xl">{emoji}</span>
+                <span className="text-sm font-bold text-yellow-700 ml-1">×10</span>
+              </div>
+            ))}
+          </div>
+        )}
+        {/* Remainder - regular size */}
+        {remainder > 0 && (
+          <div className="flex flex-wrap gap-0.5 justify-center">
+            {Array.from({ length: remainder }, (_, i) => (
+              <span key={i} className="text-2xl md:text-3xl">{emoji}</span>
+            ))}
+          </div>
+        )}
       </div>
     );
   }
@@ -46,6 +57,64 @@ function EmojiGroup({ count, emoji }: { count: number; emoji: string }) {
 }
 
 function SubtractionVisual({ minuend, subtrahend, emoji }: { minuend: number; subtrahend: number; emoji: string }) {
+  // For larger numbers, use pack visualization
+  if (minuend > 10) {
+    const packs = Math.floor(minuend / 10);
+    const remainder = minuend % 10;
+    let crossedCount = subtrahend;
+    
+    return (
+      <div className="flex flex-col gap-2 items-center">
+        {/* Packs of 10 */}
+        {packs > 0 && (
+          <div className="flex flex-wrap gap-1 justify-center">
+            {Array.from({ length: packs }, (_, i) => {
+              const packStart = i * 10;
+              const packEnd = packStart + 10;
+              const crossedInPack = Math.min(10, Math.max(0, crossedCount - packStart));
+              const isCrossed = crossedInPack === 10;
+              const isPartial = crossedInPack > 0 && crossedInPack < 10;
+              
+              return (
+                <div 
+                  key={i} 
+                  className={`flex items-center rounded-lg px-2 py-1 border-2 ${
+                    isCrossed 
+                      ? 'bg-gray-200 border-gray-300 opacity-30 line-through' 
+                      : isPartial
+                        ? 'bg-orange-100 border-orange-300'
+                        : 'bg-yellow-100 border-yellow-300'
+                  }`}
+                >
+                  <span className="text-4xl md:text-5xl">{emoji}</span>
+                  <span className={`text-sm font-bold ml-1 ${isCrossed ? 'text-gray-500' : isPartial ? 'text-orange-700' : 'text-yellow-700'}`}>
+                    {isPartial ? `×${10 - crossedInPack}` : '×10'}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+        {/* Remainder */}
+        {remainder > 0 && (
+          <div className="flex flex-wrap gap-0.5 justify-center">
+            {Array.from({ length: remainder }, (_, i) => {
+              const actualIndex = packs * 10 + i;
+              return (
+                <span
+                  key={i}
+                  className={`text-2xl md:text-3xl ${actualIndex < subtrahend ? 'opacity-30 line-through' : ''}`}
+                >
+                  {emoji}
+                </span>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
+  }
+
   // Show minuend with some crossed out (the ones being taken away)
   return (
     <div className="flex flex-wrap gap-0.5 max-w-[250px] justify-center">
