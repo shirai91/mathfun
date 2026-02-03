@@ -16,26 +16,43 @@ function hashString(str: string): number {
   return Math.abs(hash);
 }
 
+function PackIcon({ emoji, crossedOut = false }: { emoji: string; crossedOut?: boolean }) {
+  return (
+    <div className={`inline-flex flex-col items-center justify-center px-2 py-1 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 shadow-sm ${crossedOut ? 'opacity-30 line-through' : ''}`}>
+      <span className="text-4xl md:text-5xl">{emoji}</span>
+      <span className="text-xs font-semibold text-blue-700">×10</span>
+    </div>
+  );
+}
+
 function EmojiGroup({ count, emoji }: { count: number; emoji: string }) {
-  // For larger numbers, show in rows of 5
+  // For numbers > 10, use pack grouping
   if (count > 10) {
-    const rows = Math.ceil(count / 5);
+    const packs = Math.floor(count / 10);
+    const remaining = count % 10;
+
     return (
-      <div className="flex flex-col gap-1">
-        {Array.from({ length: rows }, (_, rowIndex) => {
-          const itemsInRow = Math.min(5, count - rowIndex * 5);
-          return (
-            <div key={rowIndex} className="flex gap-0.5">
-              {Array.from({ length: itemsInRow }, (_, i) => (
-                <span key={i} className="text-2xl md:text-3xl">{emoji}</span>
-              ))}
-            </div>
-          );
-        })}
+      <div className="flex flex-col gap-2 items-center">
+        {/* Pack icons row */}
+        <div className="flex gap-2 flex-wrap justify-center">
+          {Array.from({ length: packs }, (_, i) => (
+            <PackIcon key={`pack-${i}`} emoji={emoji} />
+          ))}
+        </div>
+
+        {/* Individual icons row */}
+        {remaining > 0 && (
+          <div className="flex gap-0.5 flex-wrap justify-center max-w-[200px]">
+            {Array.from({ length: remaining }, (_, i) => (
+              <span key={`individual-${i}`} className="text-2xl md:text-3xl">{emoji}</span>
+            ))}
+          </div>
+        )}
       </div>
     );
   }
 
+  // For numbers <= 10, show individual icons
   return (
     <div className="flex flex-wrap gap-0.5 max-w-[200px] justify-center">
       {Array.from({ length: count }, (_, i) => (
@@ -46,7 +63,54 @@ function EmojiGroup({ count, emoji }: { count: number; emoji: string }) {
 }
 
 function SubtractionVisual({ minuend, subtrahend, emoji }: { minuend: number; subtrahend: number; emoji: string }) {
-  // Show minuend with some crossed out (the ones being taken away)
+  // For numbers > 10, use pack grouping with smart crossing out
+  if (minuend > 10) {
+    const totalPacks = Math.floor(minuend / 10);
+    const totalRemaining = minuend % 10;
+
+    // Calculate how many packs to cross out
+    const packsToRemove = Math.floor(subtrahend / 10);
+    const individualsToRemove = subtrahend % 10;
+
+    // Determine how many individual items to cross out
+    // If we need to remove more individuals than we have, we cross them all
+    const individualsCrossed = Math.min(individualsToRemove, totalRemaining);
+
+    // If we need to remove more individuals than available, we need to cross out an extra pack
+    const extraPacksCrossed = individualsToRemove > totalRemaining ? 1 : 0;
+    const totalPacksCrossed = Math.min(packsToRemove + extraPacksCrossed, totalPacks);
+
+    return (
+      <div className="flex flex-col gap-2 items-center">
+        {/* Pack icons row */}
+        <div className="flex gap-2 flex-wrap justify-center">
+          {Array.from({ length: totalPacks }, (_, i) => (
+            <PackIcon
+              key={`pack-${i}`}
+              emoji={emoji}
+              crossedOut={i < totalPacksCrossed}
+            />
+          ))}
+        </div>
+
+        {/* Individual icons row */}
+        {totalRemaining > 0 && (
+          <div className="flex gap-0.5 flex-wrap justify-center max-w-[250px]">
+            {Array.from({ length: totalRemaining }, (_, i) => (
+              <span
+                key={`individual-${i}`}
+                className={`text-2xl md:text-3xl ${i < individualsCrossed ? 'opacity-30 line-through' : ''}`}
+              >
+                {emoji}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // For numbers <= 10, show individual icons with crossing out
   return (
     <div className="flex flex-wrap gap-0.5 max-w-[250px] justify-center">
       {Array.from({ length: minuend }, (_, i) => (
