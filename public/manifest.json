@@ -3,7 +3,7 @@
   "short_name": "MathFun",
   "description": "Ứng dụng học toán vui nhộn cho trẻ em",
   "start_url": "/",
-  "display": "standalone",
+  "display": "fullscreen",
   "background_color": "#F5EDD8",
   "theme_color": "#7CB342",
   "orientation": "portrait",
