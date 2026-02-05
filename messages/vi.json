@@ -76,5 +76,26 @@
   },
   "hint": {
     "get": "Xem gợi ý"
+  },
+  "level": {
+    "level": "Cấp độ",
+    "xpToNext": "XP để lên cấp",
+    "maxLevel": "Cấp độ tối đa!",
+    "levelUp": "Lên Cấp!",
+    "newTitle": "Bạn đã đạt danh hiệu:",
+    "congratulations": "Tiếp tục phát huy nhé!",
+    "continue": "Tiếp tục",
+    "titles": {
+      "beginner": "Người Mới",
+      "learner": "Học Viên",
+      "explorer": "Khám Phá",
+      "achiever": "Thành Tựu",
+      "champion": "Nhà Vô Địch",
+      "expert": "Chuyên Gia",
+      "master": "Bậc Thầy",
+      "genius": "Thiên Tài",
+      "legend": "Huyền Thoại",
+      "mathWizard": "Phù Thủy Toán"
+    }
   }
 }

@@ -36,6 +36,12 @@
 
 * {
   box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -142,4 +148,55 @@ body {
   background: linear-gradient(90deg, var(--color-green) 0%, var(--color-blue) 100%);
   border-radius: 9999px;
   transition: width 0.3s ease-out;
+}
+
+/* XP float animation */
+@keyframes xp-float {
+  0% {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) translateY(-60px);
+    opacity: 0;
+  }
+}
+
+.animate-xp-float {
+  animation: xp-float 1.5s ease-out forwards;
+}
+
+/* Slow spin for level up badge */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 2s ease-out forwards;
+}
+
+/* Slow pulse for level badge */
+@keyframes pulse-slow {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.2);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 2s ease-in-out infinite;
+}
+
+/* Level progress fill animation */
+@keyframes progress-fill {
+  from { width: 0; }
+}
+
+.animate-progress-fill {
+  animation: progress-fill 1s ease-out forwards;
 }

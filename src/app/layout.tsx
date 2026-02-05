@@ -2,6 +2,7 @@ import { Nunito } from "next/font/google";
 import "./globals.css";
 import { SoundProvider } from "@/contexts/SoundContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { LevelProvider } from "@/contexts/LevelContext";
 import IntlProvider from "@/components/providers/IntlProvider";
 
 const nunito = Nunito({
@@ -23,10 +24,17 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <body className={`${nunito.variable} antialiased`}>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });`,
+          }}
+        />
         <IntlProvider>
           <LanguageProvider>
             <SoundProvider>
-              {children}
+              <LevelProvider>
+                {children}
+              </LevelProvider>
             </SoundProvider>
           </LanguageProvider>
         </IntlProvider>

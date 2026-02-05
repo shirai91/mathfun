@@ -8,6 +8,7 @@ import Button from '@/components/ui/Button';
 import RangeSelector from '@/components/game/RangeSelector';
 import SoundToggle from '@/components/ui/SoundToggle';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
+import LevelDisplay from '@/components/game/LevelDisplay';
 import { useSoundContext } from '@/contexts/SoundContext';
 import { NumberRange, GameMode } from '@/types';
 
@@ -50,6 +51,11 @@ export default function Home() {
           onToggleSound={toggleSound}
           onToggleMusic={toggleMusic}
         />
+      </div>
+
+      {/* Level display - top left */}
+      <div className="absolute top-4 left-4">
+        <LevelDisplay compact showXP />
       </div>
 
       {/* Floating decorations */}

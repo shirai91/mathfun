@@ -4,10 +4,12 @@ import { useTranslations } from 'next-intl';
 import Button from '../ui/Button';
 import StarRating from './StarRating';
 import Confetti from './Confetti';
+import LevelDisplay from './LevelDisplay';
 
 interface ResultsScreenProps {
   score: number;
   total: number;
+  xpEarned?: number;
   onPlayAgain: () => void;
   onMainMenu: () => void;
 }
@@ -15,6 +17,7 @@ interface ResultsScreenProps {
 export default function ResultsScreen({
   score,
   total,
+  xpEarned,
   onPlayAgain,
   onMainMenu,
 }: ResultsScreenProps) {
@@ -50,6 +53,20 @@ export default function ResultsScreen({
 
       {/* Star rating */}
       <StarRating score={score} total={total} />
+
+      {/* XP Earned */}
+      {xpEarned !== undefined && xpEarned > 0 && (
+        <div className="text-center animate-bounce-in">
+          <p className="text-2xl font-black text-[#FFD700]">
+            +{xpEarned} XP
+          </p>
+        </div>
+      )}
+
+      {/* Level progress */}
+      <div className="w-full max-w-xs">
+        <LevelDisplay compact={false} showXP={true} />
+      </div>
 
       {/* Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 mt-4">

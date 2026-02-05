@@ -13,7 +13,10 @@ import EndlessStats from '@/components/game/EndlessStats';
 import Confetti from '@/components/game/Confetti';
 import Button from '@/components/ui/Button';
 import ConfirmDialog from '@/components/ui/ConfirmDialog';
+import LevelDisplay from '@/components/game/LevelDisplay';
+import LevelUpModal from '@/components/game/LevelUpModal';
 import { useSoundContext } from '@/contexts/SoundContext';
+import { useLevelContext } from '@/contexts/LevelContext';
 import { generateQuestion } from '@/lib/questionGenerator';
 import { NumberRange, EndlessState } from '@/types';
 import { STREAK_MILESTONES } from '@/lib/constants';
@@ -24,6 +27,7 @@ function EndlessContent() {
   const t = useTranslations();
   const range = (parseInt(searchParams.get('range') || '10') as NumberRange) || 10;
   const { playCorrect, playWrong, playHint, playStreak, playClick } = useSoundContext();
+  const { awardCorrectAnswer, awardStreakBonus } = useLevelContext();
 
   const [gameState, setGameState] = useState<EndlessState | null>(null);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -32,6 +36,7 @@ function EndlessContent() {
   const [showCorrectAnimation, setShowCorrectAnimation] = useState(false);
   const [showExitDialog, setShowExitDialog] = useState(false);
   const [showStats, setShowStats] = useState(false);
+  const [sessionXP, setSessionXP] = useState(0);
 
   const initGame = useCallback(() => {
     setGameState({
@@ -47,6 +52,7 @@ function EndlessContent() {
     setIsAnswering(false);
     setShowCorrectAnimation(false);
     setShowStats(false);
+    setSessionXP(0);
   }, [range]);
 
   useEffect(() => {
@@ -67,8 +73,17 @@ function EndlessContent() {
       playCorrect();
       setShowCorrectAnimation(true);
 
+      // Award XP for correct answer
+      const xp = awardCorrectAnswer();
+      setSessionXP((prev) => prev + xp);
+
       if (STREAK_MILESTONES.includes(newStreak as typeof STREAK_MILESTONES[number])) {
         setTimeout(() => playStreak(), 300);
+        // Award streak bonus XP
+        const streakXP = awardStreakBonus(newStreak);
+        if (streakXP > 0) {
+          setSessionXP((prev) => prev + streakXP);
+        }
       }
     } else {
       playWrong();
@@ -137,6 +152,7 @@ function EndlessContent() {
   if (showStats) {
     return (
       <PaperBackground className="min-h-screen flex flex-col items-center justify-center p-4">
+        <LevelUpModal />
         <h1 className="text-4xl font-black text-[#4A3728] mb-8">{t('endless.greatSession')}</h1>
 
         <EndlessStats
@@ -144,6 +160,20 @@ function EndlessContent() {
           totalCorrect={gameState.totalCorrect}
           bestStreak={gameState.bestStreak}
         />
+
+        {/* XP Earned in session */}
+        {sessionXP > 0 && (
+          <div className="text-center mt-4 animate-bounce-in">
+            <p className="text-2xl font-black text-[#FFD700]">
+              +{sessionXP} XP
+            </p>
+          </div>
+        )}
+
+        {/* Level progress */}
+        <div className="w-full max-w-xs mt-4">
+          <LevelDisplay compact={false} showXP={true} />
+        </div>
 
         <div className="flex flex-col sm:flex-row gap-4 mt-8">
           <Button variant="green" size="lg" onClick={handleContinue}>
@@ -159,6 +189,7 @@ function EndlessContent() {
 
   return (
     <PaperBackground className="min-h-screen flex flex-col">
+      <LevelUpModal />
       <Confetti show={showCorrectAnimation} />
 
       <header className="flex items-center justify-between p-4">

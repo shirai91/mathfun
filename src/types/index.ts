@@ -46,3 +46,22 @@ export interface GameSettings {
   soundEnabled: boolean;
   musicEnabled: boolean;
 }
+
+// Level System Types
+export interface LevelData {
+  level: number;
+  currentXP: number;
+  totalXP: number;
+}
+
+export interface LevelConfig {
+  level: number;
+  xpRequired: number;
+  title: string;
+  titleKey: string; // For i18n
+}
+
+export interface XPGain {
+  amount: number;
+  reason: 'correct_answer' | 'streak_bonus' | 'perfect_game' | 'completion_bonus';
+}

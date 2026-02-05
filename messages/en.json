@@ -76,5 +76,26 @@
   },
   "hint": {
     "get": "Get hint"
+  },
+  "level": {
+    "level": "Level",
+    "xpToNext": "XP to next level",
+    "maxLevel": "Max Level!",
+    "levelUp": "Level Up!",
+    "newTitle": "You earned the title:",
+    "congratulations": "Keep up the great work!",
+    "continue": "Continue",
+    "titles": {
+      "beginner": "Beginner",
+      "learner": "Learner",
+      "explorer": "Explorer",
+      "achiever": "Achiever",
+      "champion": "Champion",
+      "expert": "Expert",
+      "master": "Master",
+      "genius": "Genius",
+      "legend": "Legend",
+      "mathWizard": "Math Wizard"
+    }
   }
 }

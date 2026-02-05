@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, Suspense } from 'react';
+import { useState, useEffect, useCallback, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import PaperBackground from '@/components/ui/PaperBackground';
@@ -12,7 +12,9 @@ import HintButton from '@/components/ui/HintButton';
 import VisualHint from '@/components/game/VisualHint';
 import ResultsScreen from '@/components/game/ResultsScreen';
 import Confetti from '@/components/game/Confetti';
+import LevelUpModal from '@/components/game/LevelUpModal';
 import { useSoundContext } from '@/contexts/SoundContext';
+import { useLevelContext } from '@/contexts/LevelContext';
 import { generateQuestions } from '@/lib/questionGenerator';
 import { Question as QuestionType, NumberRange, QuickStartState } from '@/types';
 import { QUICK_START_QUESTIONS } from '@/lib/constants';
@@ -23,12 +25,15 @@ function QuickStartContent() {
   const t = useTranslations();
   const range = (parseInt(searchParams.get('range') || '10') as NumberRange) || 10;
   const { playCorrect, playWrong, playHint, playComplete, playClick } = useSoundContext();
+  const { awardCorrectAnswer, awardCompletionBonus } = useLevelContext();
 
   const [gameState, setGameState] = useState<QuickStartState | null>(null);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showHint, setShowHint] = useState(false);
   const [isAnswering, setIsAnswering] = useState(false);
   const [showCorrectAnimation, setShowCorrectAnimation] = useState(false);
+  const [xpEarned, setXpEarned] = useState(0);
+  const completionBonusAwarded = useRef(false);
 
   const initGame = useCallback(() => {
     const questions = generateQuestions(QUICK_START_QUESTIONS, range);
@@ -44,6 +49,8 @@ function QuickStartContent() {
     setShowHint(false);
     setIsAnswering(false);
     setShowCorrectAnimation(false);
+    setXpEarned(0);
+    completionBonusAwarded.current = false;
   }, [range]);
 
   useEffect(() => {
@@ -64,6 +71,9 @@ function QuickStartContent() {
     if (isCorrect) {
       playCorrect();
       setShowCorrectAnimation(true);
+      // Award XP for correct answer
+      const xp = awardCorrectAnswer();
+      setXpEarned((prev) => prev + xp);
     } else {
       playWrong();
     }
@@ -88,6 +98,13 @@ function QuickStartContent() {
 
       if (isLastQuestion) {
         playComplete();
+        // Award completion bonus XP
+        if (!completionBonusAwarded.current) {
+          completionBonusAwarded.current = true;
+          const finalScore = isCorrect ? gameState.score + 1 : gameState.score;
+          const bonusXp = awardCompletionBonus(finalScore, QUICK_START_QUESTIONS);
+          setXpEarned((prev) => prev + bonusXp);
+        }
       }
 
       setSelectedAnswer(null);
@@ -126,9 +143,11 @@ function QuickStartContent() {
   if (gameState.isComplete) {
     return (
       <PaperBackground className="min-h-screen">
+        <LevelUpModal />
         <ResultsScreen
           score={gameState.score}
           total={QUICK_START_QUESTIONS}
+          xpEarned={xpEarned}
           onPlayAgain={handlePlayAgain}
           onMainMenu={handleMainMenu}
         />
