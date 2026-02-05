@@ -1,4 +1,5 @@
-import { Question, QuestionType, NumberRange } from '@/types';
+import { Question, QuestionType, NumberRange, Topic } from '@/types';
+import { TOPIC_CONFIGS, DEFAULT_TOPIC } from './constants';
 
 // Browser-compatible unique ID generator
 let idCounter = 0;
@@ -15,6 +16,14 @@ const QUESTION_TYPES: QuestionType[] = [
   'sub_find_subtrahend',
   'sub_find_minuend',
 ];
+
+function getQuestionTypesForTopic(topic: Topic): QuestionType[] {
+  const topicConfig = TOPIC_CONFIGS.find((t) => t.id === topic);
+  if (!topicConfig) {
+    return QUESTION_TYPES;
+  }
+  return [...topicConfig.questionTypes];
+}
 
 function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -152,8 +161,9 @@ function generateQuestionByType(type: QuestionType, range: NumberRange): {
   }
 }
 
-export function generateQuestion(range: NumberRange): Question {
-  const type = QUESTION_TYPES[randomInt(0, QUESTION_TYPES.length - 1)];
+export function generateQuestion(range: NumberRange, topic: Topic = DEFAULT_TOPIC): Question {
+  const allowedTypes = getQuestionTypesForTopic(topic);
+  const type = allowedTypes[randomInt(0, allowedTypes.length - 1)];
   const format: 'horizontal' | 'vertical' = Math.random() > 0.5 ? 'horizontal' : 'vertical';
 
   const questionData = generateQuestionByType(type, range);
@@ -166,14 +176,15 @@ export function generateQuestion(range: NumberRange): Question {
     options,
     format,
     questionType: type,
+    topic,
   };
 }
 
-export function generateQuestions(count: number, range: NumberRange): Question[] {
+export function generateQuestions(count: number, range: NumberRange, topic: Topic = DEFAULT_TOPIC): Question[] {
   const questions: Question[] = [];
 
   for (let i = 0; i < count; i++) {
-    questions.push(generateQuestion(range));
+    questions.push(generateQuestion(range, topic));
   }
 
   return questions;

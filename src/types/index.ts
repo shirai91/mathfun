@@ -9,6 +9,7 @@ export interface Question {
   format: 'horizontal' | 'vertical';
   operation: '+' | '-';
   questionType: QuestionType;
+  topic: Topic;
 }
 
 export type QuestionType =
@@ -18,6 +19,22 @@ export type QuestionType =
   | 'sub_find_diff'       // a - b = _
   | 'sub_find_subtrahend' // a - _ = c
   | 'sub_find_minuend';   // _ - b = c
+
+export type Topic =
+  | 'all'                // All question types (random mix)
+  | 'addition'           // All addition types
+  | 'subtraction'        // All subtraction types
+  | 'find_result'        // a + b = ? and a - b = ? (finding the result)
+  | 'find_missing';      // Finding missing operands (? + b = c, a + ? = c, etc.)
+
+export interface TopicConfig {
+  id: Topic;
+  titleKey: string;
+  descriptionKey: string;
+  emoji: string;
+  color: string;
+  questionTypes: QuestionType[];
+}
 
 export type NumberRange = 10 | 20 | 50 | 100;
 

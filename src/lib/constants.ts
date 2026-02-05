@@ -71,6 +71,64 @@ export const XP_REWARDS = {
   completionBonus: 10, // Bonus for completing quick-start
 } as const;
 
+// Topic configurations
+export const TOPIC_CONFIGS = [
+  {
+    id: 'all' as const,
+    titleKey: 'topic.all.title',
+    descriptionKey: 'topic.all.description',
+    emoji: '🎲',
+    color: '#9B59B6', // Purple
+    questionTypes: [
+      'add_find_sum',
+      'add_find_first',
+      'add_find_second',
+      'sub_find_diff',
+      'sub_find_subtrahend',
+      'sub_find_minuend',
+    ] as const,
+  },
+  {
+    id: 'addition' as const,
+    titleKey: 'topic.addition.title',
+    descriptionKey: 'topic.addition.description',
+    emoji: '➕',
+    color: '#7CB342', // Green
+    questionTypes: ['add_find_sum', 'add_find_first', 'add_find_second'] as const,
+  },
+  {
+    id: 'subtraction' as const,
+    titleKey: 'topic.subtraction.title',
+    descriptionKey: 'topic.subtraction.description',
+    emoji: '➖',
+    color: '#FF9F43', // Orange
+    questionTypes: ['sub_find_diff', 'sub_find_subtrahend', 'sub_find_minuend'] as const,
+  },
+  {
+    id: 'find_result' as const,
+    titleKey: 'topic.findResult.title',
+    descriptionKey: 'topic.findResult.description',
+    emoji: '🎯',
+    color: '#4ECDC4', // Teal
+    questionTypes: ['add_find_sum', 'sub_find_diff'] as const,
+  },
+  {
+    id: 'find_missing' as const,
+    titleKey: 'topic.findMissing.title',
+    descriptionKey: 'topic.findMissing.description',
+    emoji: '🔍',
+    color: '#FF6B9D', // Pink
+    questionTypes: [
+      'add_find_first',
+      'add_find_second',
+      'sub_find_subtrahend',
+      'sub_find_minuend',
+    ] as const,
+  },
+] as const;
+
+export const DEFAULT_TOPIC = 'all' as const;
+
 // Level colors for visual display
 export const LEVEL_COLORS = [
   '#7CB342', // Level 1 - Green

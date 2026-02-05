@@ -6,38 +6,51 @@ import { useTranslations } from 'next-intl';
 import PaperBackground from '@/components/ui/PaperBackground';
 import Button from '@/components/ui/Button';
 import RangeSelector from '@/components/game/RangeSelector';
+import TopicSelector from '@/components/game/TopicSelector';
 import SoundToggle from '@/components/ui/SoundToggle';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
 import LevelDisplay from '@/components/game/LevelDisplay';
 import { useSoundContext } from '@/contexts/SoundContext';
-import { NumberRange, GameMode } from '@/types';
+import { NumberRange, GameMode, Topic } from '@/types';
 
-type MenuState = 'main' | 'range-select';
+type MenuState = 'main' | 'topic-select' | 'range-select';
 
 export default function Home() {
   const router = useRouter();
   const t = useTranslations();
   const [menuState, setMenuState] = useState<MenuState>('main');
   const [selectedMode, setSelectedMode] = useState<GameMode | null>(null);
+  const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
   const { soundEnabled, musicPlaying, toggleSound, toggleMusic, playClick } = useSoundContext();
 
   const handleModeSelect = (mode: GameMode) => {
     playClick();
     setSelectedMode(mode);
+    setMenuState('topic-select');
+  };
+
+  const handleTopicSelect = (topic: Topic) => {
+    playClick();
+    setSelectedTopic(topic);
     setMenuState('range-select');
   };
 
   const handleRangeSelect = (range: NumberRange) => {
     playClick();
-    if (selectedMode) {
-      router.push(`/play/${selectedMode}?range=${range}`);
+    if (selectedMode && selectedTopic) {
+      router.push(`/play/${selectedMode}?range=${range}&topic=${selectedTopic}`);
     }
   };
 
   const handleBack = () => {
     playClick();
-    setMenuState('main');
-    setSelectedMode(null);
+    if (menuState === 'range-select') {
+      setMenuState('topic-select');
+    } else {
+      setMenuState('main');
+      setSelectedMode(null);
+      setSelectedTopic(null);
+    }
   };
 
   return (
@@ -114,6 +127,36 @@ export default function Home() {
               {t('menu.endless')}
             </Button>
           </div>
+        </div>
+      ) : menuState === 'topic-select' ? (
+        <div className="flex flex-col items-center gap-6 animate-fade-in">
+          {/* Back button */}
+          <button
+            onClick={handleBack}
+            className="self-start btn-bounce flex items-center gap-2 text-[#6B5744] hover:text-[#4A3728] font-semibold transition-colors"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                fillRule="evenodd"
+                d="M11.03 3.97a.75.75 0 010 1.06l-6.22 6.22H21a.75.75 0 010 1.5H4.81l6.22 6.22a.75.75 0 11-1.06 1.06l-7.5-7.5a.75.75 0 010-1.06l7.5-7.5a.75.75 0 011.06 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+            {t('menu.back')}
+          </button>
+
+          {/* Mode title */}
+          <h2 className="text-3xl font-bold text-[#4A3728]">
+            {selectedMode === 'quick-start' ? t('menu.quickStart') : t('menu.endless')}
+          </h2>
+
+          {/* Topic selector */}
+          <TopicSelector onSelect={handleTopicSelect} />
         </div>
       ) : (
         <div className="flex flex-col items-center gap-6 animate-fade-in">

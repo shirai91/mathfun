@@ -77,6 +77,29 @@
   "hint": {
     "get": "Get hint"
   },
+  "topic": {
+    "title": "Choose a topic!",
+    "all": {
+      "title": "All Topics",
+      "description": "Mix of everything"
+    },
+    "addition": {
+      "title": "Addition",
+      "description": "Practice adding numbers"
+    },
+    "subtraction": {
+      "title": "Subtraction",
+      "description": "Practice subtracting"
+    },
+    "findResult": {
+      "title": "Find Result",
+      "description": "a + b = ? or a - b = ?"
+    },
+    "findMissing": {
+      "title": "Find Missing",
+      "description": "? + b = c or a - ? = c"
+    }
+  },
   "level": {
     "level": "Level",
     "xpToNext": "XP to next level",

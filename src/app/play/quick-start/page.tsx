@@ -16,14 +16,15 @@ import LevelUpModal from '@/components/game/LevelUpModal';
 import { useSoundContext } from '@/contexts/SoundContext';
 import { useLevelContext } from '@/contexts/LevelContext';
 import { generateQuestions } from '@/lib/questionGenerator';
-import { Question as QuestionType, NumberRange, QuickStartState } from '@/types';
-import { QUICK_START_QUESTIONS } from '@/lib/constants';
+import { Question as QuestionType, NumberRange, QuickStartState, Topic } from '@/types';
+import { QUICK_START_QUESTIONS, DEFAULT_TOPIC } from '@/lib/constants';
 
 function QuickStartContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const t = useTranslations();
   const range = (parseInt(searchParams.get('range') || '10') as NumberRange) || 10;
+  const topic = (searchParams.get('topic') as Topic) || DEFAULT_TOPIC;
   const { playCorrect, playWrong, playHint, playComplete, playClick } = useSoundContext();
   const { awardCorrectAnswer, awardCompletionBonus } = useLevelContext();
 
@@ -36,7 +37,7 @@ function QuickStartContent() {
   const completionBonusAwarded = useRef(false);
 
   const initGame = useCallback(() => {
-    const questions = generateQuestions(QUICK_START_QUESTIONS, range);
+    const questions = generateQuestions(QUICK_START_QUESTIONS, range, topic);
     setGameState({
       questions,
       currentIndex: 0,
@@ -51,7 +52,7 @@ function QuickStartContent() {
     setShowCorrectAnimation(false);
     setXpEarned(0);
     completionBonusAwarded.current = false;
-  }, [range]);
+  }, [range, topic]);
 
   useEffect(() => {
     initGame();

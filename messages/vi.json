@@ -77,6 +77,29 @@
   "hint": {
     "get": "Xem gợi ý"
   },
+  "topic": {
+    "title": "Chọn chủ đề!",
+    "all": {
+      "title": "Tất cả",
+      "description": "Hỗn hợp mọi dạng"
+    },
+    "addition": {
+      "title": "Phép cộng",
+      "description": "Luyện tập cộng số"
+    },
+    "subtraction": {
+      "title": "Phép trừ",
+      "description": "Luyện tập trừ số"
+    },
+    "findResult": {
+      "title": "Tìm kết quả",
+      "description": "a + b = ? hoặc a - b = ?"
+    },
+    "findMissing": {
+      "title": "Tìm số ẩn",
+      "description": "? + b = c hoặc a - ? = c"
+    }
+  },
   "level": {
     "level": "Cấp độ",
     "xpToNext": "XP để lên cấp",

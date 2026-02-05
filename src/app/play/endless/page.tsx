@@ -18,14 +18,15 @@ import LevelUpModal from '@/components/game/LevelUpModal';
 import { useSoundContext } from '@/contexts/SoundContext';
 import { useLevelContext } from '@/contexts/LevelContext';
 import { generateQuestion } from '@/lib/questionGenerator';
-import { NumberRange, EndlessState } from '@/types';
-import { STREAK_MILESTONES } from '@/lib/constants';
+import { NumberRange, EndlessState, Topic } from '@/types';
+import { STREAK_MILESTONES, DEFAULT_TOPIC } from '@/lib/constants';
 
 function EndlessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const t = useTranslations();
   const range = (parseInt(searchParams.get('range') || '10') as NumberRange) || 10;
+  const topic = (searchParams.get('topic') as Topic) || DEFAULT_TOPIC;
   const { playCorrect, playWrong, playHint, playStreak, playClick } = useSoundContext();
   const { awardCorrectAnswer, awardStreakBonus } = useLevelContext();
 
@@ -40,7 +41,7 @@ function EndlessContent() {
 
   const initGame = useCallback(() => {
     setGameState({
-      currentQuestion: generateQuestion(range),
+      currentQuestion: generateQuestion(range, topic),
       totalAnswered: 0,
       totalCorrect: 0,
       currentStreak: 0,
@@ -53,7 +54,7 @@ function EndlessContent() {
     setShowCorrectAnimation(false);
     setShowStats(false);
     setSessionXP(0);
-  }, [range]);
+  }, [range, topic]);
 
   useEffect(() => {
     initGame();
@@ -97,7 +98,7 @@ function EndlessContent() {
 
         return {
           ...prev,
-          currentQuestion: generateQuestion(range),
+          currentQuestion: generateQuestion(range, topic),
           totalAnswered: prev.totalAnswered + 1,
           totalCorrect: isCorrect ? prev.totalCorrect + 1 : prev.totalCorrect,
           currentStreak: newStreak,
