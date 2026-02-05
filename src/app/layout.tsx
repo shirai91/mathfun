@@ -14,6 +14,16 @@ const nunito = Nunito({
 export const metadata = {
   title: "MathFun - Học toán vui vẻ!",
   description: "Ứng dụng học toán vui nhộn cho trẻ em",
+  manifest: "/manifest.json",
+  themeColor: "#7CB342",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "MathFun",
+  },
+  formatDetection: {
+    telephone: false,
+  },
 };
 
 export default function RootLayout({
